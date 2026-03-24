@@ -1,0 +1,466 @@
+/* Contenedor principal del panel */
+.dashboard-layout {
+    min-height: 100vh;
+    background-color: #f8f9fa;
+    font-family: Arial, sans-serif;
+}
+
+/* Barra de navegación superior */
+.top-navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #ffffff;
+    padding: 1rem 2rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.top-navbar h1 {
+    margin: 0;
+    color: #333333;
+    font-size: 1.5rem;
+}
+
+/* Botón para cerrar sesión */
+.btn-danger {
+    padding: 0.5rem 1rem;
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.2s;
+}
+
+.btn-danger:hover {
+    background-color: #c82333;
+}
+
+/* Área de contenido principal donde irá la tabla */
+.main-content {
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Contenedor principal de la tabla para que no se desborde */
+.contenedor-tabla {
+  width: 100%;
+  overflow-x: auto;
+  margin-top: 20px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilos base de la tabla */
+.tabla-tickets {
+  width: 100%;
+  border-collapse: collapse; /* Quita los espacios dobles entre las celdas */
+  text-align: left;
+}
+
+/* Encabezado de la tabla */
+.tabla-tickets th {
+  background-color: #343a40; /* Gris oscuro / negro */
+  color: white;
+  padding: 12px 15px;
+  font-weight: bold;
+  border-bottom: 2px solid #ddd;
+}
+
+/* Celdas de datos */
+.tabla-tickets td {
+  padding: 12px 15px;
+  border-bottom: 1px solid #ddd;
+  color: #333;
+}
+
+/* Efecto cebra para las filas (muy común y fácil de justificar) */
+.tabla-tickets tbody tr:nth-child(even) {
+  background-color: #f8f9fa;
+}
+
+/* Efecto al pasar el mouse sobre la fila */
+.tabla-tickets tbody tr:hover {
+  background-color: #e9ecef;
+}
+
+/* Estilos para las etiquetas de estado */
+.etiqueta-estado {
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-size: 0.85em;
+  font-weight: bold;
+  text-align: center;
+  display: inline-block;
+}
+
+/* Colores para cada estado posible */
+.estado-abierto { background-color: #cce5ff; color: #004085; }
+.estado-resuelto { background-color: #d4edda; color: #155724; }
+.estado-cerrado { background-color: #e2e3e5; color: #383d41; }
+.estado-escalado { background-color: #f8d7da; color: #721c24; }
+
+/* Botones de acción dentro de la tabla */
+.btn-resolver {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-right: 5px;
+  font-size: 0.9em;
+}
+
+.btn-escalar {
+  background-color: #ffc107;
+  color: #333;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9em;
+  font-weight: bold;
+}
+
+.btn-resolver:hover { background-color: #218838; }
+.btn-escalar:hover { background-color: #e0a800; }
+
+/* --- ESTILOS DEL MODAL --- */
+
+.fondo-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.6); /* Fondo oscuro semitransparente */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* Asegura que esté por encima de todo */
+}
+
+.contenido-modal {
+  background-color: white;
+  padding: 30px;
+  border-radius: 8px;
+  width: 100%;
+  max-width: 500px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.contenido-modal h3 {
+  margin-top: 0;
+  margin-bottom: 20px;
+  color: #333;
+  border-bottom: 2px solid #eee;
+  padding-bottom: 10px;
+}
+
+.grupo-formulario {
+  margin-bottom: 15px;
+  display: flex;
+  flex-direction: column;
+}
+
+.grupo-formulario label {
+  margin-bottom: 5px;
+  font-weight: bold;
+  color: #555;
+}
+
+.grupo-formulario input,
+.grupo-formulario select {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1em;
+}
+
+.acciones-modal {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 25px;
+}
+
+.btn-guardar {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.btn-guardar:hover { background-color: #0056b3; }
+
+.btn-cancelar {
+  background-color: #6c757d;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.btn-cancelar:hover { background-color: #5a6268; }
+
+/* --- FILTROS Y CONTROLES --- */
+.barra-controles {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: white;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.grupo-filtros {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+
+.input-filtro, .select-filtro {
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 0.9em;
+}
+
+/* --- SECCIONES DE TABLAS --- */
+.seccion-tabla {
+  margin-bottom: 40px;
+}
+
+.seccion-tabla h3 {
+  color: #333;
+  border-bottom: 2px solid #007bff;
+  padding-bottom: 5px;
+  display: inline-block;
+  margin-bottom: 15px;
+}
+
+/* --- PAGINACIÓN --- */
+.controles-paginacion {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  margin-top: 15px;
+  padding: 10px 0;
+}
+
+.btn-pagina {
+  background-color: #f8f9fa;
+  border: 1px solid #ddd;
+  padding: 6px 15px;
+  border-radius: 4px;
+  cursor: pointer;
+  color: #333;
+  font-weight: bold;
+}
+
+.btn-pagina:hover:not(:disabled) {
+  background-color: #e2e6ea;
+}
+
+.btn-pagina:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.texto-paginacion {
+  font-size: 0.9em;
+  color: #555;
+}
+
+/* --- NUEVOS ESTILOS PARA FILTROS Y ORDENAMIENTO --- */
+.seccion-controles {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 25px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.fila-controles {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  align-items: center;
+}
+
+.etiqueta-control {
+  font-weight: bold;
+  color: #444;
+  margin-right: 5px;
+  font-size: 0.9em;
+}
+
+/* --- ESTILO PARA EL UUID --- */
+.celda-id {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.8em;
+  color: #555;
+  word-break: break-all; /* Permite que el UUID se divida en dos líneas si la pantalla es pequeña */
+  max-width: 150px;
+}
+
+/* --- ESTILOS PARA ENCABEZADOS ORDENABLES --- */
+.th-ordenable {
+  cursor: pointer;
+  user-select: none; /* Evita que el texto se seleccione al hacer doble clic rápido */
+  transition: background-color 0.2s ease;
+}
+
+.th-ordenable:hover {
+  background-color: #495057; /* Un tono un poco más claro que el fondo oscuro original */
+}
+
+.contenedor-th {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
+.icono-orden {
+  font-size: 0.8em;
+  color: #888; /* Color tenue cuando no está activo */
+}
+
+.icono-orden.activo {
+  color: #fff; /* Blanco brillante cuando la columna está ordenando */
+  font-weight: bold;
+}
+
+/* --- BOTÓN DESCARGAR PDF --- */
+.btn-descargar {
+  background-color: #17a2b8;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  margin-right: 10px;
+  transition: background-color 0.2s;
+}
+
+.btn-descargar:hover:not(:disabled) {
+  background-color: #138496;
+}
+
+.btn-descargar:disabled {
+  background-color: #8ad3df;
+  cursor: not-allowed;
+  opacity: 0.8;
+}
+
+/* --- MODAL DE DETALLE Y COMENTARIOS --- */
+.modal-ancho {
+  max-width: 900px; /* Más ancho para que quepan dos columnas */
+  display: flex;
+  flex-direction: column;
+}
+
+.cuerpo-detalle {
+  display: flex;
+  gap: 20px;
+  margin-top: 15px;
+  max-height: 60vh;
+}
+
+.panel-info {
+  flex: 1;
+  border-right: 1px solid #eee;
+  padding-right: 20px;
+  overflow-y: auto;
+}
+
+.panel-info p {
+  margin-bottom: 10px;
+  line-height: 1.5;
+}
+
+.panel-comentarios {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.lista-comentarios {
+  flex-grow: 1;
+  overflow-y: auto;
+  background-color: #f8f9fa;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  border: 1px solid #e9ecef;
+}
+
+.burbuja-comentario {
+  background-color: white;
+  padding: 10px;
+  border-radius: 6px;
+  margin-bottom: 15px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+  border-left: 4px solid #007bff;
+}
+
+.meta-comentario {
+  font-size: 0.8em;
+  color: #6c757d;
+  margin-bottom: 5px;
+  font-weight: bold;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 5px;
+}
+
+.texto-comentario {
+  font-size: 0.95em;
+  color: #333;
+  margin-top: 5px;
+}
+
+.formulario-comentario {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.formulario-comentario textarea {
+  resize: vertical;
+  padding: 10px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+.btn-detalle {
+  background-color: #17a2b8;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-right: 5px;
+  font-size: 0.9em;
+}
+
+.btn-detalle:hover {
+  background-color: #138496;
+}

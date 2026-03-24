@@ -1,0 +1,25 @@
+# Dependencias y Secretos
+node_modules/
+.env
+
+# Archivos de logs (Si npm falla, crea estos archivos basura)
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Carpetas de compilación de React (Archivos minificados listos para producción)
+dist/
+build/
+out/
+
+# Archivos del sistema operativo (Basura que crean Windows/Mac automáticamente)
+.DS_Store
+Thumbs.db
+
+# Configuraciones de tu editor de código (No queremos subir tus ajustes personales de color o plugins)
+.vscode/
+.idea/
+
+# Archivos temporales o de cobertura de pruebas
+coverage/
+*.swp
