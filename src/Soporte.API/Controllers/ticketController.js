@@ -65,16 +65,23 @@ const getComments = async (req, res) => {
 // Crear un nuevo ticket
 const create = async (req, res) => {
   try {
-    // El userId lo sacamos del token (req.user.id) para saber quién creó el ticket
-    const ticketData = {
-      ...req.body,
-      userId: req.user.id,
-    };
+    // 1. Extraemos TODOS los datos que manda el modal de React
+    const { product_id, subject, description, type, impact } = req.body;
 
-    const newTicket = await ticketService.createTicket(ticketData);
-    res
-      .status(201)
-      .json({ message: "Ticket creado exitosamente", ticket: newTicket });
+    // 2. Tomamos el ID del usuario logueado (técnico L1)
+    const assigned_user_id = req.user.id;
+
+    // 3. Llamamos al servicio
+    const newTicket = await ticketService.createTicket({
+      product_id,
+      assigned_user_id,
+      subject,
+      description,
+      type,
+      impact,
+    });
+
+    res.status(201).json(newTicket);
   } catch (error) {
     res.status(400).json({ error: error.message });
   }

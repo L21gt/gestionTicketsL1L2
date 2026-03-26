@@ -163,18 +163,33 @@ const Dashboard = () => {
     };
 
     const handleCrearTicket = async (e) => {
-        e.preventDefault();
-        try {
-            await ticketService.createTicket(formularioTicket);
-            alert("Ticket creado exitosamente");
-            setMostrarModal(false);
-            setFormularioTicket({ subject: '', description: '', type: 'SOPORTE', impact: 'BAJO' });
-            cargarTickets();
-        } catch (err) {
-            console.error(err);
-            alert("Hubo un error al crear el ticket.");
-        }
-    };
+    e.preventDefault();
+
+    // Candado de seguridad: Evitar enviar si el asunto está vacío
+    if (!formularioTicket.subject.trim()) {
+        alert("Por favor, ingresa un asunto para el ticket.");
+        return;
+    }
+
+    try {
+        // El objeto debe tener exactamente estos nombres de propiedad
+        const datosParaEnviar = {
+            product_id: formularioTicket.product_id,
+            assigned_user_id: formularioTicket.assigned_user_id,
+            subject: formularioTicket.subject,      
+            description: formularioTicket.description,
+            type: formularioTicket.type,
+            impact: formularioTicket.impact
+        };
+
+        await ticketService.createTicket(datosParaEnviar);
+        alert("Ticket creado con éxito");
+        setMostrarModal(false);
+        cargarTickets(); // Recargar la tabla
+    } catch (err) {
+        console.error("Error al crear:", err);
+    }
+};
 
     // --- FUNCIÓN PARA ABRIR DETALLE Y CARGAR COMENTARIOS ---
     const abrirDetalle = async (id) => {
@@ -337,7 +352,7 @@ const Dashboard = () => {
                                 </td>
                                 <td>L{ticket.current_level}</td>
                                 <td>{new Date(ticket.created_at).toLocaleDateString()}</td>
-                                <td>
+                                <td className="td-acciones">
                                     {/* Botón Detalles: Siempre visible */}
                                     <button 
                                         className="btn-detalle"
@@ -533,6 +548,16 @@ const Dashboard = () => {
                                         </option>
                                     ))}
                                 </select>
+                            </div>
+                            <div className="grupo-formulario">
+                                <label>Asunto:</label>
+                                <input 
+                                    type="text" 
+                                    required
+                                    value={formularioTicket.subject} 
+                                    onChange={(e) => setFormularioTicket({...formularioTicket, subject: e.target.value})}
+                                    placeholder="Ej. Falla en el sistema"
+                                />
                             </div>
                             <div className="grupo-formulario">
                                 <label>Descripción detallada:</label>

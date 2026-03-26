@@ -112,39 +112,35 @@ const getCommentsByTicket = async (ticketId) => {
 };
 
 const createTicket = async (ticketData) => {
-  const { productId, userId, subject, description, type, impact } = ticketData;
+  // Desestructuramos los datos exactos que nos mandó el controlador
+  const { product_id, assigned_user_id, subject, description, type, impact } =
+    ticketData;
 
-  try {
-    const query = `
-            INSERT INTO tickets (
-                product_id, 
-                assigned_user_id, 
-                subject, 
-                description, 
-                type, 
-                impact, 
-                current_level, 
-                status
-            )
-            VALUES ($1, $2, $3, $4, $5, $6, 1, 'ABIERTO')
-            RETURNING *;
-        `;
+  const query = `
+    INSERT INTO tickets (
+      product_id, 
+      assigned_user_id, 
+      subject, 
+      description, 
+      type, 
+      impact, 
+      status, 
+      current_level
+    )
+    VALUES ($1, $2, $3, $4, $5, $6, 'ABIERTO', 1)
+    RETURNING *;
+  `;
 
-    const values = [
-      productId, // $1: UUID de la tabla products
-      userId, // $2: El ID del usuario del Token (va a assigned_user_id)
-      subject, // $3: VARCHAR
-      description, // $4: TEXT
-      type, // $5: ticket_type (ENUM)
-      impact, // $6: ticket_impact (ENUM)
-    ];
-
-    const result = await pool.query(query, values);
-    return result.rows[0];
-  } catch (error) {
-    console.error("Error exacto en la BD:", error.message);
-    throw error;
-  }
+  const values = [
+    product_id,
+    assigned_user_id,
+    subject,
+    description,
+    type,
+    impact,
+  ];
+  const result = await pool.query(query, values);
+  return result.rows[0];
 };
 
 const getTicketById = async (ticketId) => {
